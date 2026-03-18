@@ -26,8 +26,17 @@
         </NButton>
       </NSpace>
       <NSpace align="center" :size="16">
-        <NText depth="3">Renseigner le user connecté ici</NText>
-        <NButton size="small">Déconnexion</NButton>
+        <NText v-if="isAuthenticated" depth="3">
+          {{ user?.username }}
+        </NText>
+
+        <NButton v-if="isAuthenticated" size="small" @click="handleLogout">
+          Déconnexion
+        </NButton>
+
+        <RouterLink v-else to="/sign-in">
+          <NButton size="small">Connexion</NButton>
+        </RouterLink>
       </NSpace>
     </NSpace>
   </NLayoutHeader>
@@ -35,4 +44,21 @@
 
 <script setup lang="ts">
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL as string
+import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
+
+import { useAuthStore } from '@/stores/auth'
+
+const auth = useAuthStore()
+const { user, isAuthenticated } = storeToRefs(auth)
+const router = useRouter()
+
+const handleLogout = () => {
+  auth.token = null
+  auth.user = null
+  localStorage.removeItem('token')
+  localStorage.removeItem('user')
+
+  router.push('/sign-in')
+}
 </script>

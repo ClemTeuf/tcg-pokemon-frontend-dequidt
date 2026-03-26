@@ -42,9 +42,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { useApi } from '@/composables/useApi'
 import { useAuthStore } from '@/stores/auth'
-const useAPI = useApi()
 const auth = useAuthStore()
 const router = useRouter()
 
@@ -59,13 +57,10 @@ const handleSignIn = async () => {
   error.value = null
 
   try {
-    const response = await useAPI.signIn({
+    await auth.signIn({
       email: email.value,
       password: password.value,
     })
-
-    auth.token = response.token
-    auth.user = response.user
 
     router.push('/')
   } catch (_e) {

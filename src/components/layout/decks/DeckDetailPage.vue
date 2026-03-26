@@ -40,8 +40,12 @@ const fetchData = async () => {
     deckCards.value = deckRes.cards
       .map((dc) => cardsRes.find((c) => c.id === dc.cardId))
       .filter(Boolean) as Card[]
-  } catch (e: unknown) {
-    message.error(e.message)
+  } catch (e) {
+    if (e instanceof Error) {
+      message.error(e.message)
+    } else {
+      message.error('Une erreur est survenue')
+    }
   }
 }
 

@@ -41,8 +41,12 @@ const name = ref('')
 const fetchCards = async () => {
   try {
     cards.value = await api.getCards()
-  } catch (e: unknown) {
-    message.error(e.message)
+  } catch (e) {
+    if (e instanceof Error) {
+      message.error(e.message)
+    } else {
+      message.error('Une erreur est survenue')
+    }
   }
 }
 
@@ -63,8 +67,12 @@ const submit = async () => {
 
     message.success('Deck créé')
     router.push('/')
-  } catch (e: unknown) {
-    message.error(e.message)
+  } catch (e) {
+    if (e instanceof Error) {
+      message.error(e.message)
+    } else {
+      message.error('Une erreur est survenue')
+    }
   }
 }
 

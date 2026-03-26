@@ -77,8 +77,12 @@ const api = useApi()
 const fetchDecks = async () => {
   try {
     decks.value = await api.getMyDecks()
-  } catch (e: unknown) {
-    message.error(e.message || 'Erreur chargement')
+  } catch (e) {
+    if (e instanceof Error) {
+      message.error(e.message)
+    } else {
+      message.error('Une erreur est survenue')
+    }
   }
 }
 
@@ -87,8 +91,12 @@ const deleteDeck = async (id: number) => {
     await api.deleteDeck(id)
     message.success('Deck supprimé')
     fetchDecks()
-  } catch (e: unknown) {
-    message.error(e.message || 'Erreur suppression')
+  } catch (e) {
+    if (e instanceof Error) {
+      message.error(e.message)
+    } else {
+      message.error('Une erreur est survenue')
+    }
   }
 }
 

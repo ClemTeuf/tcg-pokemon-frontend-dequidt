@@ -47,12 +47,15 @@ const fetchData = async () => {
     name.value = deckRes.name
     cards.value = cardsRes
 
-    // 🔥 PRÉ-REMPLISSAGE
     selectedCards.value = deckRes.cards
       .map((dc) => cardsRes.find((c) => c.id === dc.cardId))
       .filter(Boolean) as Card[]
-  } catch (e: unknown) {
-    message.error(e.message)
+  } catch (e) {
+    if (e instanceof Error) {
+      message.error(e.message)
+    } else {
+      message.error('Une erreur est survenue')
+    }
   }
 }
 
@@ -71,8 +74,12 @@ const submit = async () => {
 
     message.success('Deck modifié')
     router.push(`/decks/${route.params.id}`)
-  } catch (e: unknown) {
-    message.error(e.message)
+  } catch (e) {
+    if (e instanceof Error) {
+      message.error(e.message)
+    } else {
+      message.error('Une erreur est survenue')
+    }
   }
 }
 

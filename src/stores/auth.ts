@@ -28,5 +28,15 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = response.user
   }
 
-  return { token, user, isAuthenticated, signUp }
+  const signIn = async (payload: { email: string; password: string }) => {
+    const response = await useAPI.signIn(payload)
+
+    set('token', response.token)
+    set('user', response.user)
+
+    token.value = response.token
+    user.value = response.user
+  }
+
+  return { token, user, isAuthenticated, signUp, signIn }
 })
